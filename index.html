@@ -1,0 +1,259 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>ts-functional-pipe</title>
+	<meta name="description" content="Documentation for ts-functional-pipe">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">ts-functional-pipe</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>ts-functional-pipe</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#type-safe-function-composition-for-typescript" id="type-safe-function-composition-for-typescript" style="color: inherit; text-decoration: none;">
+					<h1>Type-safe function composition for Typescript</h1>
+				</a>
+				<a href="#a-micro-library-for-functional-composition" id="a-micro-library-for-functional-composition" style="color: inherit; text-decoration: none;">
+					<h2>A micro-library for functional composition</h2>
+				</a>
+				<p>In the absence of <code>|&gt;</code> (the pipe operator) it&#39;s useful to have a type-safe pipe function that can compose an a large (up to 64) number of unary functions. This minimal library contains a few different helper functions for this purpose.</p>
+				<p><a href="https://npmjs.org/package/ts-functional-pipe" title="View this project on npm"><img src="http://img.shields.io/npm/v/ts-functional-pipe.svg?style=flat" alt="npm version"></a>
+				<a href="https://travis-ci.org/biggyspender/ts-functional-pipe"><img src="https://travis-ci.org/biggyspender/ts-functional-pipe.svg?branch=master" alt="Build Status"></a></p>
+				<blockquote>
+					<a href="#note" id="note" style="color: inherit; text-decoration: none;">
+						<h2>NOTE</h2>
+					</a>
+					<p>Versions &lt;=2.x erroneously used the term <code>compose</code> for left-to-right function composition. v3 is a major overhaul of this library and contains several breaking changes, both in the code, and in the meaning of <code>compose</code>. </p>
+					<p>These are version &gt;=3 documents. Please find v2.x documentation <a href="https://github.com/biggyspender/ts-functional-pipe/tree/v2.1.1">here</a></p>
+				</blockquote>
+				<a href="#requirements" id="requirements" style="color: inherit; text-decoration: none;">
+					<h2>Requirements</h2>
+				</a>
+				<p>This library makes use of <a href="https://devblogs.microsoft.com/typescript/announcing-typescript-4-2/#non-trailing-rests">leading/middle rest elements</a>, introduced in <strong>Typescript version 4.2</strong></p>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h2>Usage</h2>
+				</a>
+				<p>Suppose we have the following unary functions:</p>
+				<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">dinosaurify</span><span style="color: #000000"> = (</span><span style="color: #001080">name</span><span style="color: #000000">:</span><span style="color: #267F99">string</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #A31515">`</span><span style="color: #0000FF">${</span><span style="color: #001080">name</span><span style="color: #0000FF">}</span><span style="color: #A31515">-o-saurus`</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">sayHello</span><span style="color: #000000"> = (</span><span style="color: #001080">name</span><span style="color: #000000">:</span><span style="color: #267F99">string</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #A31515">`Hello, </span><span style="color: #0000FF">${</span><span style="color: #001080">name</span><span style="color: #0000FF">}</span><span style="color: #A31515">!`</span>
+</code></pre>
+				<p>We can compose these functions into a single function using the compose function:</p>
+				<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">sayHelloToDinosaur</span><span style="color: #000000"> = </span><span style="color: #795E26">compose</span><span style="color: #000000">(</span><span style="color: #001080">sayHello</span><span style="color: #000000">, </span><span style="color: #001080">dinosaurify</span><span style="color: #000000">)</span>
+</code></pre>
+				<p>and call it</p>
+				<pre><code class="language-typescript"><span style="color: #795E26">sayHelloToDinosaur</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;mike&quot;</span><span style="color: #000000">) </span><span style="color: #008000">// &quot;Hello, mike-o-saurus!&quot;</span>
+</code></pre>
+				<p>Note that with <code>compose</code>, function composition occurs from <em>right-to-left</em>. </p>
+				<p>The <code>pipe</code> function composes its parameters from <em>left-to-right</em>, so the equivalent <code>pipe</code> version of the code above would be:</p>
+				<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">sayHelloToDinosaur_withPipe</span><span style="color: #000000"> = </span><span style="color: #795E26">pipe</span><span style="color: #000000">(</span><span style="color: #001080">dinosaurify</span><span style="color: #000000">, </span><span style="color: #001080">sayHello</span><span style="color: #000000">)</span>
+</code></pre>
+				<a href="#the-applyargs-helper" id="the-applyargs-helper" style="color: inherit; text-decoration: none;">
+					<h3>The <code>applyArgs</code> helper</h3>
+				</a>
+				<p>Alternatively, we could have called the <code>applyArgs</code> helper, which is useful for ensuring that type inference flows inutitively through the composed functions. This makes more sense later when we start using it with (apparently) untyped arrow functions.</p>
+				<pre><code class="language-typescript"><span style="color: #795E26">applyArgs</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;mike&quot;</span><span style="color: #000000">).</span><span style="color: #795E26">to</span><span style="color: #000000">(</span><span style="color: #795E26">pipe</span><span style="color: #000000">(</span><span style="color: #001080">dinosaurify</span><span style="color: #000000">, </span><span style="color: #001080">sayHello</span><span style="color: #000000">)) </span><span style="color: #008000">// &quot;Hello, mike-o-saurus!&quot;</span>
+</code></pre>
+				<p>or, less verbosely:</p>
+				<pre><code class="language-typescript"><span style="color: #795E26">applyArgs</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;mike&quot;</span><span style="color: #000000">)(</span><span style="color: #795E26">pipe</span><span style="color: #000000">(</span><span style="color: #001080">dinosaurify</span><span style="color: #000000">, </span><span style="color: #001080">sayHello</span><span style="color: #000000">)) </span><span style="color: #008000">// &quot;Hello, mike-o-saurus!&quot;</span>
+</code></pre>
+				<a href="#pipeinto-function" id="pipeinto-function" style="color: inherit; text-decoration: none;">
+					<h3><code>pipeInto</code> function</h3>
+				</a>
+				<p>This is shorthand to combine the <code>applyArgs</code> helper with <code>pipe</code>, reducing the amount of boilerplate. Using <code>pipeInto</code> we can rewrite the above as:</p>
+				<pre><code class="language-typescript"><span style="color: #795E26">pipeInto</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;mike&quot;</span><span style="color: #000000">, </span><span style="color: #001080">dinosaurify</span><span style="color: #000000">, </span><span style="color: #001080">sayHello</span><span style="color: #000000">)</span>
+</code></pre>
+				<a href="#in-depth" id="in-depth" style="color: inherit; text-decoration: none;">
+					<h2>In depth</h2>
+				</a>
+				<p>Pipes work with <strong>unary</strong>-functions, using the return value of one function as the only parameter to the next function.</p>
+				<a href="#defining-higher-order-unary-map-and-filter-functions" id="defining-higher-order-unary-map-and-filter-functions" style="color: inherit; text-decoration: none;">
+					<h3>Defining higher-order unary map and filter functions</h3>
+				</a>
+				<p>Say we create our own versions the Array map and filter functions to work over <code>Iterable&lt;T&gt;</code></p>
+				<pre><code class="language-typescript"><span style="color: #008000">// helper function for making iterables from generator functions</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">toIterable</span><span style="color: #000000"> = &lt;</span><span style="color: #267F99">T</span><span style="color: #000000">, </span><span style="color: #267F99">TF</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #267F99">IterableIterator</span><span style="color: #000000">&lt;</span><span style="color: #267F99">T</span><span style="color: #000000">&gt;&gt;(</span><span style="color: #001080">f</span><span style="color: #000000">: </span><span style="color: #267F99">TF</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
+<span style="color: #000000">  </span><span style="color: #001080">[</span><span style="color: #267F99">Symbol</span><span style="color: #001080">.iterator]:</span><span style="color: #000000"> </span><span style="color: #001080">f</span>
+<span style="color: #000000">})</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">_map</span><span style="color: #000000"> = &lt;</span><span style="color: #267F99">T</span><span style="color: #000000">, </span><span style="color: #267F99">TOut</span><span style="color: #000000">&gt;(</span><span style="color: #001080">src</span><span style="color: #000000">: </span><span style="color: #267F99">Iterable</span><span style="color: #000000">&lt;</span><span style="color: #267F99">T</span><span style="color: #000000">&gt;, </span><span style="color: #795E26">selector</span><span style="color: #000000">: (</span><span style="color: #001080">v</span><span style="color: #000000">: </span><span style="color: #267F99">T</span><span style="color: #000000">, </span><span style="color: #001080">i</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #267F99">TOut</span><span style="color: #000000">): </span><span style="color: #267F99">Iterable</span><span style="color: #000000">&lt;</span><span style="color: #267F99">TOut</span><span style="color: #000000">&gt; </span><span style="color: #0000FF">=&gt;</span>
+<span style="color: #000000">  </span><span style="color: #795E26">toIterable</span><span style="color: #000000">(</span><span style="color: #0000FF">function*</span><span style="color: #000000">() {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">c</span><span style="color: #000000"> = </span><span style="color: #098658">0</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">for</span><span style="color: #000000"> (</span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">v</span><span style="color: #000000"> </span><span style="color: #0000FF">of</span><span style="color: #000000"> </span><span style="color: #001080">src</span><span style="color: #000000">) {</span>
+<span style="color: #000000">      </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #795E26">selector</span><span style="color: #000000">(</span><span style="color: #001080">v</span><span style="color: #000000">, </span><span style="color: #001080">c</span><span style="color: #000000">++)</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">  })</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">_filter</span><span style="color: #000000"> = &lt;</span><span style="color: #267F99">T</span><span style="color: #000000">&gt;(</span><span style="color: #001080">src</span><span style="color: #000000">: </span><span style="color: #267F99">Iterable</span><span style="color: #000000">&lt;</span><span style="color: #267F99">T</span><span style="color: #000000">&gt;, </span><span style="color: #795E26">pred</span><span style="color: #000000">: (</span><span style="color: #001080">v</span><span style="color: #000000">: </span><span style="color: #267F99">T</span><span style="color: #000000">, </span><span style="color: #001080">i</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #267F99">boolean</span><span style="color: #000000">): </span><span style="color: #267F99">Iterable</span><span style="color: #000000">&lt;</span><span style="color: #267F99">T</span><span style="color: #000000">&gt; </span><span style="color: #0000FF">=&gt;</span>
+<span style="color: #000000">  </span><span style="color: #795E26">toIterable</span><span style="color: #000000">(</span><span style="color: #0000FF">function*</span><span style="color: #000000">() {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">i</span><span style="color: #000000"> = </span><span style="color: #098658">0</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">for</span><span style="color: #000000"> (</span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">x</span><span style="color: #000000"> </span><span style="color: #0000FF">of</span><span style="color: #000000"> </span><span style="color: #001080">src</span><span style="color: #000000">) {</span>
+<span style="color: #000000">      </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #795E26">pred</span><span style="color: #000000">(</span><span style="color: #001080">x</span><span style="color: #000000">, </span><span style="color: #001080">i</span><span style="color: #000000">++)) {</span>
+<span style="color: #000000">        </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #001080">x</span>
+<span style="color: #000000">      }</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">  })</span>
+</code></pre>
+				<p>Here, the <code>_map</code> and <code>_filter</code> are not unary functions so cannot be used in a pipe/compose.</p>
+				<a href="#convert-functions-to-unary-with-deferp0" id="convert-functions-to-unary-with-deferp0" style="color: inherit; text-decoration: none;">
+					<h3>Convert functions to unary with <code>deferP0</code></h3>
+				</a>
+				<p>We can use the provided <code>deferP0</code> method to transform these functions into functions that return a unary function (that takes a single parameter that was the first parameter of the original source function)</p>
+				<p>So it turns functions of the form</p>
+				<pre><code><span style="color: #000000">(</span><span style="color: #001080">src</span><span style="color: #000000">: </span><span style="color: #267F99">TSrc</span><span style="color: #000000">, </span><span style="color: #001080">b</span><span style="color: #000000">: </span><span style="color: #267F99">B</span><span style="color: #000000">, </span><span style="color: #001080">c</span><span style="color: #000000">: </span><span style="color: #267F99">C</span><span style="color: #000000">, </span><span style="color: #001080">d</span><span style="color: #000000">: </span><span style="color: #267F99">D</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0070C1">R</span><span style="color: #000000"> </span>
+</code></pre>
+				<p>into functions of the form</p>
+				<pre><code><span style="color: #000000">(</span><span style="color: #001080">b</span><span style="color: #000000">: </span><span style="color: #267F99">B</span><span style="color: #000000">, </span><span style="color: #001080">c</span><span style="color: #000000">: </span><span style="color: #267F99">C</span><span style="color: #000000">, </span><span style="color: #001080">d</span><span style="color: #000000">: </span><span style="color: #267F99">D</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> (</span><span style="color: #001080">src</span><span style="color: #000000">: </span><span style="color: #267F99">TSrc</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0070C1">R</span>
+</code></pre>
+				<a href="#functions-that-return-unary-functions" id="functions-that-return-unary-functions" style="color: inherit; text-decoration: none;">
+					<h3>Functions that return unary functions</h3>
+				</a>
+				<p>So, to make a composable <code>map</code> function:</p>
+				<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">map</span><span style="color: #000000"> = </span><span style="color: #795E26">deferP0</span><span style="color: #000000">(</span><span style="color: #001080">_map</span><span style="color: #000000">)</span>
+</code></pre>
+				<p>Here, we transform the <code>_map</code> function with type </p>
+				<pre><code><span style="color: #000000">&lt;</span><span style="color: #267F99">T</span><span style="color: #000000">, </span><span style="color: #267F99">TOut</span><span style="color: #000000">&gt;(</span><span style="color: #001080">src</span><span style="color: #000000">: </span><span style="color: #267F99">Iterable</span><span style="color: #000000">&lt;</span><span style="color: #267F99">T</span><span style="color: #000000">&gt;, </span><span style="color: #795E26">selector</span><span style="color: #000000">: (</span><span style="color: #001080">v</span><span style="color: #000000">: </span><span style="color: #267F99">T</span><span style="color: #000000">, </span><span style="color: #001080">i</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #267F99">TOut</span><span style="color: #000000">): </span><span style="color: #267F99">Iterable</span><span style="color: #000000">&lt;</span><span style="color: #267F99">TOut</span><span style="color: #000000">&gt; </span>
+</code></pre>
+				<p>into the generated <code>map</code> function which has the type </p>
+				<pre><code><span style="color: #000000">&lt;</span><span style="color: #267F99">T</span><span style="color: #000000">, </span><span style="color: #267F99">TOut</span><span style="color: #000000">&gt;(</span><span style="color: #795E26">selector</span><span style="color: #000000">: (</span><span style="color: #001080">v</span><span style="color: #000000">: </span><span style="color: #267F99">T</span><span style="color: #000000">, </span><span style="color: #001080">i</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #267F99">TOut</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> (</span><span style="color: #001080">src</span><span style="color: #000000">: </span><span style="color: #267F99">Iterable</span><span style="color: #000000">&lt;</span><span style="color: #267F99">T</span><span style="color: #000000">&gt;): </span><span style="color: #267F99">Iterable</span><span style="color: #000000">&lt;</span><span style="color: #267F99">TOut</span><span style="color: #000000">&gt;</span>
+</code></pre>
+				<p>As can be seen, we end up with a function that generates a <strong>unary</strong> function.</p>
+				<p>We can do the same with <code>_filter</code></p>
+				<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">filter</span><span style="color: #000000"> = </span><span style="color: #795E26">deferP0</span><span style="color: #000000">(</span><span style="color: #001080">_filter</span><span style="color: #000000">)</span>
+</code></pre>
+				<p>Now the <code>map</code> and <code>filter</code> functions that we generated above <strong>return</strong> unary functions and can be used in a pipe/compose with type inference &quot;flowing&quot; through the composed functions.</p>
+				<a href="#composing-map-and-filter-with-pipe" id="composing-map-and-filter-with-pipe" style="color: inherit; text-decoration: none;">
+					<h3>Composing <code>map</code> and <code>filter</code> with <code>pipe</code></h3>
+				</a>
+				<p>Let&#39;s use them with the <code>pipe</code> and the <code>applyArgs</code> helper (so that type information propagates through all the function parameters)</p>
+				<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">transformed</span><span style="color: #000000"> = </span>
+<span style="color: #000000">  </span><span style="color: #795E26">applyArgs</span><span style="color: #000000">([</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #098658">2</span><span style="color: #000000">, </span><span style="color: #098658">3</span><span style="color: #000000">]).</span><span style="color: #795E26">to</span><span style="color: #000000">(</span>
+<span style="color: #000000">    </span><span style="color: #795E26">pipe</span><span style="color: #000000">(</span>
+<span style="color: #000000">      </span><span style="color: #795E26">filter</span><span style="color: #000000">(</span><span style="color: #001080">x</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">x</span><span style="color: #000000"> % </span><span style="color: #098658">2</span><span style="color: #000000"> === </span><span style="color: #098658">1</span><span style="color: #000000">),  </span><span style="color: #008000">// x is inferred as number</span>
+<span style="color: #000000">      </span><span style="color: #795E26">map</span><span style="color: #000000">(</span><span style="color: #001080">x</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">x</span><span style="color: #000000"> * </span><span style="color: #098658">2</span><span style="color: #000000">)            </span><span style="color: #008000">// x is inferred as number</span>
+<span style="color: #000000">    )</span>
+<span style="color: #000000">  ) </span><span style="color: #008000">// iterable with values [2, 6]</span>
+</code></pre>
+				<p>When using &quot;untyped&quot; arrow functions, as above, by using the <code>applyArgs</code> helper, we can see how types are propagated through the functions without needing to provide types for any function parameters. However, we might just want a re-useable function composed of multiple functions, so we can use <code>compose(...unaryFuncs)</code> or <code>pipe(...unaryFuncs)</code> on their own... but we&#39;ll need to supply type-information, usually in just one place, so that typescript can infer other types successfully:</p>
+				<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">oddNumbersMultipliedByTwo</span><span style="color: #000000"> =</span>
+<span style="color: #000000">    </span><span style="color: #008000">// pipe is inferred as (src:Iterable&lt;number&gt;)=&gt;Iterable&lt;string&gt;</span>
+<span style="color: #000000">    </span><span style="color: #795E26">pipe</span><span style="color: #000000">(</span>
+<span style="color: #000000">      </span><span style="color: #008000">// typescript can infer all other types when </span>
+<span style="color: #000000">      </span><span style="color: #008000">// we provide this input type annotation (number)</span>
+<span style="color: #000000">      </span><span style="color: #795E26">filter</span><span style="color: #000000">(</span><span style="color: #001080">x</span><span style="color: #000000">:</span><span style="color: #001080">number</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">x</span><span style="color: #000000"> % </span><span style="color: #098658">2</span><span style="color: #000000"> === </span><span style="color: #098658">1</span><span style="color: #000000">), </span>
+<span style="color: #000000">      </span><span style="color: #795E26">map</span><span style="color: #000000">(</span><span style="color: #001080">x</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">x</span><span style="color: #000000">.</span><span style="color: #795E26">toString</span><span style="color: #000000">()),   </span><span style="color: #008000">// x is inferred as number</span>
+<span style="color: #000000">      </span><span style="color: #795E26">map</span><span style="color: #000000">(</span><span style="color: #001080">x</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">x</span><span style="color: #000000"> + </span><span style="color: #A31515">&quot; &quot;</span><span style="color: #000000"> + </span><span style="color: #001080">x</span><span style="color: #000000">)     </span><span style="color: #008000">// x is inferred as string</span>
+<span style="color: #000000">    )</span>
+</code></pre>
+				<p>So <code>oddNumbersMultipliedByTwoPipe</code> has the inferred type</p>
+				<pre><code><span style="color: #000000">(</span><span style="color: #001080">src</span><span style="color: #000000">: </span><span style="color: #267F99">Iterable</span><span style="color: #000000">&lt;</span><span style="color: #267F99">number</span><span style="color: #000000">&gt;) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">Iterable</span><span style="color: #000000">&lt;</span><span style="color: #001080">string</span><span style="color: #000000">&gt;</span>
+</code></pre>
+				<p>and when we use it...</p>
+				<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">r</span><span style="color: #000000"> = </span><span style="color: #795E26">oddMultipliedByTwo</span><span style="color: #000000">([</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #098658">2</span><span style="color: #000000">, </span><span style="color: #098658">3</span><span style="color: #000000">]) </span>
+<span style="color: #008000">// arr has type string[]</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">arr</span><span style="color: #000000"> = [...</span><span style="color: #001080">r</span><span style="color: #000000">] </span><span style="color: #008000">// [&quot;1 1&quot;, &quot;2 2&quot;]</span>
+</code></pre>
+				<p><code>arr</code> has type string[]</p>
+				<a href="#acknowledgements" id="acknowledgements" style="color: inherit; text-decoration: none;">
+					<h3>acknowledgements</h3>
+				</a>
+				<p>Created using the wonderful <a href="https://github.com/alexjoverm/typescript-library-starter">https://github.com/alexjoverm/typescript-library-starter</a>.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="modules.html#func" class="tsd-kind-icon">Func</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="modules.html#unaryfunction" class="tsd-kind-icon">Unary<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="modules.html#applyargs" class="tsd-kind-icon">apply<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="modules.html#compose" class="tsd-kind-icon">compose</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="modules.html#deferp0" class="tsd-kind-icon">defer<wbr>P0</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="modules.html#pipe" class="tsd-kind-icon">pipe</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="modules.html#pipeinto" class="tsd-kind-icon">pipe<wbr>Into</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
